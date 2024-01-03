@@ -1,12 +1,18 @@
 from pyscript import document
-import itertools
 import numpy as np
 
 candidate_history = []
 
-def generate_all_possible_codes(length):
-    """指定された長さのすべての可能なコードのリストを生成する関数"""
-    return list(itertools.product(range(4), repeat=length))
+def generate_all_possible_codes(length, current_code=[]):
+    """指定された長さのすべての可能なコードのリストを再帰的に生成する関数"""
+    if length == 0:
+        return [tuple(current_code)]
+    
+    all_codes = []
+    for digit in range(4):
+        all_codes.extend(generate_all_possible_codes(length - 1, current_code + [digit]))
+    
+    return all_codes
 
 def evaluate_guess(secret_code, guess):
     """ヒントを生成する関数。正しい数字と位置の数、正しい数字だが位置が異なる数を返す"""
